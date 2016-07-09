@@ -12,5 +12,10 @@
   "buildOnSave": false,
   "atom": {
     "formatOnSave": true
-  }
+  },
+  "filesGlob": [
+    "**/*.ts",
+    "**/*.tsx",
+    "!node_modules/**"
+  ]
 }

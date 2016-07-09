@@ -7,18 +7,21 @@ const configuration = environment => {
   console.log("environment is development ", !!environment.development);
 
   return {
-    entry: {
-      app: "./main"
-    },
+    entry: "./Main",
+    // entry: {
+    //   app: "./Main"
+    // },
     output: {
-      filename: "[name].[hash].bundle.js",
-      path: resolve(__dirname, "dist", "assets", "[hash]"),
+      // filename: "[name].[hash].bundle.js",
+      filename: "bundle.js",
+      // path: resolve(__dirname, "dist", "assets", "[hash]"),
+      path: resolve(__dirname, "dist"),
       pathinfo: !environment.production,
       publicPath: "http://cdn.webpack-learn.dev/assets/[hash]/"
     },
     context: resolve(__dirname, "src"),
     bail: environment.production,
-    devtool: environment.production ? "source-map" : "eval-source-map",
+    devtool: "source-map", // environment.production ? "source-map" : "eval-source-map",
     module: {
       preLoaders: [
         {
@@ -29,12 +32,13 @@ const configuration = environment => {
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
+          // loader: "source-map!eslint",
           loader: "eslint"
         }
       ],
       loaders: [
         {
-          test: /\.ts(x?)$/,
+          test: /\.ts(x)?$/,
           exclude: /(node_modules)/,
           loader: "ts"
         },
@@ -45,6 +49,11 @@ const configuration = environment => {
           query: {
             presets: ["es2015-webpack"]
           }
+        },
+        {
+          test: /\.pug$/,
+          exclude: /(node_modules)/,
+          loader: "pug-html"
         }
       ],
       postLoaders: []
@@ -52,7 +61,15 @@ const configuration = environment => {
     resolve: {
       extensions: ["", ".js", ".ts", ".tsx", ".pug", ".styl"]
     },
-    plugins: []
+    plugins: [],
+    // When importing a module whose path matches one of the following, just
+    // assume a corresponding global variable exists and use that instead.
+    // This is important because it allows us to avoid bundling all of our
+    // dependencies, which allows browsers to cache those libraries between builds.
+    externals: {
+      "react": "React",
+      "react-dom": "ReactDOM"
+    }
   };
 };
 
