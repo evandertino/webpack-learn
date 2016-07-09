@@ -10,6 +10,7 @@ class ZipCodeValidator implements StringValidator {
 
 class CountryCodeValidator implements StringValidator {
     isAcceptable(s: string) {
+        console.log("hello world");
         return s === "Ke";
     }
 }

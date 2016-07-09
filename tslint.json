@@ -1,3 +1,11 @@
 {
-
+  "rules": {
+    "class-name": true,
+    "no-duplicate-variable": true,
+    "no-eval": true,
+    "no-var-keyword": true,
+    "quotemark": [true, "double"],
+    "curly": true,
+    "eofline": true
+  }
 }
