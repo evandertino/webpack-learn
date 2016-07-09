@@ -11,7 +11,7 @@ const configuration = environment => {
       app: './main'
     },
     output: {
-      filename: '[name].[chunkhash].bundle.js',
+      filename: '[name].[hash].bundle.js',
       path: resolve(__dirname, 'dist', 'assets', '[hash]'),
       pathinfo: !environment.production,
       publicPath: 'http://cdn.webpack-learn.dev/assets/[hash]/'
@@ -19,7 +19,11 @@ const configuration = environment => {
     context: resolve(__dirname, 'src'),
     module: {
       preLoaders: [],
-      loaders: [],
+      loaders: [{
+        test: /\.ts(x?)$/,
+        exclude: /(node_modules)/,
+        loader: 'ts-loader'
+      }],
       postLoaders: []
     },
     resolve: {

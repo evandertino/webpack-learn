@@ -1,12 +1,10 @@
 {
   "version": "0.0.1",
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "declaration": true,
+    "module": "es6",
+    "target": "es5",
     "removeComments": true,
     "noImplicitAny": true,
-    "noLib": false,
     "jsx": "react"
   },
   "compileOnSave": false,
