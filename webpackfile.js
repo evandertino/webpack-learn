@@ -1,4 +1,6 @@
 const { resolve } = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Webpack = require("webpack");
 
 const configuration = environment => {
   console.log("active environment ", environment);
@@ -16,8 +18,8 @@ const configuration = environment => {
       filename: "bundle.js",
       // path: resolve(__dirname, "dist", "assets", "[hash]"),
       path: resolve(__dirname, "dist"),
-      pathinfo: !environment.production,
-      publicPath: "http://cdn.webpack-learn.dev/assets/[hash]/"
+      pathinfo: !environment.production
+        // publicPath: "http://cdn.webpack-learn.dev/assets/[hash]/"
     },
     context: resolve(__dirname, "src"),
     bail: environment.production,
@@ -32,11 +34,15 @@ const configuration = environment => {
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
-          // loader: "source-map!eslint",
-          loader: "eslint"
+          loader: "source-map!eslint",
+          // loader: "eslint"
         }
       ],
       loaders: [
+        {
+          test: /\.json(x)?$/,
+          loader: "json"
+        },
         {
           test: /\.ts(x)?$/,
           exclude: /(node_modules)/,
@@ -53,15 +59,36 @@ const configuration = environment => {
         {
           test: /\.pug$/,
           exclude: /(node_modules)/,
-          loader: "pug-html"
+          loader: "pug-html",
+          query: {
+            pretty: true
+          }
         }
       ],
       postLoaders: []
     },
     resolve: {
-      extensions: ["", ".js", ".ts", ".tsx", ".pug", ".styl"]
+      extensions: ["", ".js", ".ts", ".tsx", ".pug", ".styl", ".json"]
     },
-    plugins: [],
+    plugins: [
+      // We can get rid of various test helpers, which is another thing you don’t
+      // need in your production build if we tell Webpack to use the production
+      // node environment.
+      new Webpack.DefinePlugin({
+        "process.env": {
+          "NODE_ENV": environment.production ? JSON.stringify("production") : JSON.stringify("development")
+        }
+      }),
+      new HtmlWebpackPlugin({
+        template: "./index"
+      }),
+      new Webpack.optimize.UglifyJsPlugin({
+        compress: {
+          unused: true,
+          dead_code: true
+        }
+      })
+    ],
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
@@ -69,6 +96,11 @@ const configuration = environment => {
     externals: {
       "react": "React",
       "react-dom": "ReactDOM"
+    },
+    node: {
+      fs: "empty",
+      module: "empty",
+      fsevents: "empty"
     }
   };
 };

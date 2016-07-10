@@ -1,9 +1,13 @@
 doctype html
-html
+html(lang="en")
   head
     meta(charset="UTF-8")
-    title="Hello world"
+    title="Hello React!"
   body
     #example
 
+    // Polyfill
+    script(src="https://cdn.polyfill.io/v2/polyfill.min.js")
     // Dependencies
+    script(src="http://localhost:8181/react/dist/react.js")
+    script(src="http://localhost:8181/react-dom/dist/react-dom.js")

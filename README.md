@@ -10,3 +10,6 @@ Tools
   5. Stylus
   6. Lost Grid
   7. RxJS
+  8. Polyfill.io
+  9. https://github.com/evandertino/react-dynamic-route-loading-es6
+  10. 
