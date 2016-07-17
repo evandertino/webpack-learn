@@ -74,21 +74,28 @@ const configuration = environment => {
       // We can get rid of various test helpers, which is another thing you don’t
       // need in your production build if we tell Webpack to use the production
       // node environment.
-      new Webpack.DefinePlugin({
+      (environment.development || environment.testing) ? undefined : new Webpack.DefinePlugin({
         "process.env": {
-          "NODE_ENV": environment.production ? JSON.stringify("production") : JSON.stringify("development")
+          "NODE_ENV": JSON.stringify("production")
         }
       }),
       new HtmlWebpackPlugin({
         template: "./index"
       }),
-      new Webpack.optimize.UglifyJsPlugin({
+      (environment.development || environment.testing) ? undefined : new Webpack.optimize.UglifyJsPlugin({
         compress: {
           unused: true,
-          dead_code: true
+          dead_code: true,
+          screw_ie8: true,
+          warnings: true
         }
-      })
-    ],
+      }),
+      // put loaders into minimize mode
+      (environment.development || environment.testing) ? undefined : new Webpack.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false
+      }),
+    ].filter(plugin => !!plugin),
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
