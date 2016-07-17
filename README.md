@@ -1,5 +1,5 @@
-Features List
-  - Tree shaking capabilities with webpack 2
+Features List For Demo
+  - Tree shaking capabilities with webpack 2 and Typescript
   -
 
 Tools
@@ -12,4 +12,4 @@ Tools
   7. RxJS
   8. Polyfill.io
   9. https://github.com/evandertino/react-dynamic-route-loading-es6
-  10. 
+  10.
